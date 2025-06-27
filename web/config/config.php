@@ -3,11 +3,11 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Session configuration
-session_start();
+// Session configuration (must be before session_start)
 ini_set('session.cookie_httponly', 1);
 ini_set('session.use_only_cookies', 1);
 ini_set('session.cookie_secure', 1);
+session_start();
 
 // Application settings
 define('APP_NAME', 'Manufacturing Database System');
@@ -131,8 +131,41 @@ function check_machine_availability($machine_id, $start_time, $end_time) {
     return $result && $result['count'] == 0;
 }
 
+// Flash message utilities
+function set_flash_message($type, $message) {
+    $_SESSION['flash_message'] = [
+        'type' => $type,
+        'message' => $message
+    ];
+}
+
+function get_flash_message() {
+    if (isset($_SESSION['flash_message'])) {
+        $flash = $_SESSION['flash_message'];
+        unset($_SESSION['flash_message']);
+        return $flash;
+    }
+    return null;
+}
+
 // Initialize database connection
 require_once 'database.php';
 $db = new Database();
 $conn = $db->getConnection();
+
+// Ensure default user exists (for development/demo)
+try {
+    $exists = $db->getOne("SELECT * FROM users WHERE username = ?", ['user']);
+    if (!$exists) {
+        $db->insert('users', [
+            'username' => 'user',
+            'password' => password_hash('root', PASSWORD_DEFAULT), // Store hashed password
+            'email' => 'user@example.com',
+            'full_name' => 'Default User',
+            'role' => 'admin'
+        ]);
+    }
+} catch (Exception $e) {
+    // Optionally log or handle error
+}
 ?> 

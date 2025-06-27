@@ -3,6 +3,9 @@ require_once 'config/config.php';
 
 // Fetch all products
 $products = $db->getAll('SELECT * FROM products');
+
+// Get and display flash message if present
+$flash = get_flash_message();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -62,6 +65,12 @@ $products = $db->getAll('SELECT * FROM products');
                 </div>
             </nav>
             <div class="container-fluid mt-4">
+                <!-- Flash message display -->
+                <?php if ($flash): ?>
+                    <div class="alert alert-<?= htmlspecialchars($flash['type']) ?>" role="alert">
+                        <?= htmlspecialchars($flash['message']) ?>
+                    </div>
+                <?php endif; ?>
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h2>Products</h2>
                     <button class="btn btn-primary" onclick="window.location.href='add-product.php'"><i class="fas fa-plus"></i> Add Product</button>

@@ -1,4 +1,5 @@
 <?php
+
 class Database {
     private $host = "localhost";
     private $db_name = "manufacturing_db";
@@ -9,7 +10,6 @@ class Database {
     // Get database connection
     public function getConnection() {
         $this->conn = null;
-
         try {
             $this->conn = new PDO(
                 "mysql:host=" . $this->host . ";dbname=" . $this->db_name,
@@ -19,9 +19,9 @@ class Database {
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
         } catch(PDOException $e) {
-            echo "Connection Error: " . $e->getMessage();
+            // Use error_log for errors, don't echo in production
+            error_log("[ERROR] Database Connection Error: " . $e->getMessage());
         }
-
         return $this->conn;
     }
 
@@ -32,7 +32,7 @@ class Database {
             $stmt->execute($params);
             return $stmt;
         } catch(PDOException $e) {
-            echo "Query Error: " . $e->getMessage();
+            error_log("[ERROR] Query Error: " . $e->getMessage());
             return false;
         }
     }
@@ -53,15 +53,13 @@ class Database {
     public function insert($table, $data) {
         $columns = implode(", ", array_keys($data));
         $values = implode(", ", array_fill(0, count($data), "?"));
-        
         $query = "INSERT INTO {$table} ({$columns}) VALUES ({$values})";
-        
         try {
             $stmt = $this->conn->prepare($query);
             $stmt->execute(array_values($data));
             return $this->conn->lastInsertId();
         } catch(PDOException $e) {
-            echo "Insert Error: " . $e->getMessage();
+            error_log("[ERROR] Insert Error: " . $e->getMessage());
             return false;
         }
     }
@@ -70,13 +68,12 @@ class Database {
     public function update($table, $data, $where, $whereParams = []) {
         $set = implode(" = ?, ", array_keys($data)) . " = ?";
         $query = "UPDATE {$table} SET {$set} WHERE {$where}";
-        
         try {
             $stmt = $this->conn->prepare($query);
             $stmt->execute(array_merge(array_values($data), $whereParams));
             return $stmt->rowCount();
         } catch(PDOException $e) {
-            echo "Update Error: " . $e->getMessage();
+            error_log("[ERROR] Update Error: " . $e->getMessage());
             return false;
         }
     }
@@ -84,13 +81,12 @@ class Database {
     // Delete record
     public function delete($table, $where, $params = []) {
         $query = "DELETE FROM {$table} WHERE {$where}";
-        
         try {
             $stmt = $this->conn->prepare($query);
             $stmt->execute($params);
             return $stmt->rowCount();
         } catch(PDOException $e) {
-            echo "Delete Error: " . $e->getMessage();
+            error_log("[ERROR] Delete Error: " . $e->getMessage());
             return false;
         }
     }

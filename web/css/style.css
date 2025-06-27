@@ -1,6 +1,6 @@
-/* Vibrant Modern Theme Layout */
+/* Material UI Inspired Theme Layout */
 body {
-    background: linear-gradient(135deg, #f8ffae 0%, #43c6ac 100%);
+    background: #f5f5f6;
     color: #222;
     font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
     margin: 0;
@@ -19,9 +19,9 @@ body {
     min-width: 220px;
     max-width: 220px;
     min-height: 100vh;
-    background: linear-gradient(135deg, #43c6ac 0%, #191654 100%);
+    background: #1976d2; /* Material UI Primary */
     border-right: none;
-    box-shadow: 2px 0 12px rgba(67,198,172,0.12);
+    box-shadow: 2px 0 12px rgba(25, 118, 210, 0.08);
     display: flex;
     flex-direction: column;
     padding-top: 0;
@@ -36,7 +36,7 @@ body {
     padding: 24px 20px 12px 20px;
     background: transparent;
     color: #fff;
-    border-bottom: 1px solid rgba(255,255,255,0.15);
+    border-bottom: 1px solid rgba(255,255,255,0.10);
     text-align: left;
     font-size: 1.2em;
     font-weight: 600;
@@ -57,7 +57,7 @@ body {
     font-size: 1em;
     display: flex;
     align-items: center;
-    color: #e0e0e0;
+    color: #e3eaf2;
     text-decoration: none;
     border-radius: 8px;
     transition: background 0.2s, color 0.2s;
@@ -66,20 +66,20 @@ body {
 }
 
 #sidebar ul li a:hover, #sidebar ul li.active > a {
-    background: linear-gradient(90deg, #ff512f 0%, #dd2476 100%);
+    background: #1565c0; /* Material UI Primary Darker */
     color: #fff;
 }
 
 #sidebar ul ul a {
     font-size: 0.95em !important;
     padding-left: 40px !important;
-    background: rgba(255,255,255,0.08);
-    color: #e0e0e0;
+    background: rgba(255,255,255,0.04);
+    color: #e3eaf2;
     border-radius: 8px;
 }
 
 #sidebar ul ul a:hover {
-    background: linear-gradient(90deg, #ff512f 0%, #dd2476 100%);
+    background: #1565c0;
     color: #fff;
 }
 
@@ -92,10 +92,10 @@ body {
 }
 
 .card {
-    border-radius: 16px;
-    box-shadow: 0 4px 24px rgba(67,198,172,0.12);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
     border: none;
-    background: linear-gradient(135deg, #f8ffae 0%, #43c6ac 100%);
+    background: #fff;
     color: #222;
     margin-bottom: 24px;
     padding: 24px;
@@ -103,24 +103,24 @@ body {
 }
 
 .card:hover {
-    background: linear-gradient(135deg, #43c6ac 0%, #f8ffae 100%);
-    color: #191654;
+    background: #f5f5f6;
+    color: #1976d2;
 }
 
 .table {
     margin-bottom: 0;
-    background: rgba(255,255,255,0.85);
+    background: #fff;
     color: #222;
     border-collapse: separate;
     border-spacing: 0;
     width: 100%;
-    border-radius: 12px;
+    border-radius: 8px;
     overflow: hidden;
 }
 
 .table thead th {
     border-top: none;
-    background: linear-gradient(90deg, #ff512f 0%, #dd2476 100%);
+    background: #1976d2;
     color: #fff;
     font-weight: 600;
     letter-spacing: 0.04em;
@@ -153,35 +153,35 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-    background: #ddd;
+    background: #e0e0e0;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #43c6ac 0%, #191654 100%);
+    background: #1976d2;
     border-radius: 8px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, #ff512f 0%, #dd2476 100%);
+    background: #1565c0;
 }
 
 .badge {
     border-radius: 8px;
     font-weight: 600;
     padding: 6px 14px;
-    background: linear-gradient(90deg, #ff512f 0%, #dd2476 100%);
+    background: #1976d2;
     color: #fff;
     font-size: 1em;
 }
 
-.badge.bg-success { background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%) !important; color: #fff !important; }
-.badge.bg-warning { background: linear-gradient(90deg, #f7971e 0%, #ffd200 100%) !important; color: #fff !important; }
-.badge.bg-danger { background: linear-gradient(90deg, #f953c6 0%, #b91d73 100%) !important; color: #fff !important; }
-.badge.bg-info { background: linear-gradient(90deg, #43c6ac 0%, #191654 100%) !important; color: #fff !important; }
+.badge.bg-success { background: #43a047 !important; color: #fff !important; }
+.badge.bg-warning { background: #ffa000 !important; color: #fff !important; }
+.badge.bg-danger { background: #d32f2f !important; color: #fff !important; }
+.badge.bg-info { background: #0288d1 !important; color: #fff !important; }
 
 .dropdown-menu {
-    border-radius: 12px;
-    box-shadow: 0 4px 24px rgba(67,198,172,0.12);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
     border: none;
     background: #fff;
     margin-top: 8px;
@@ -189,24 +189,24 @@ body {
 }
 
 .dropdown-item:hover {
-    background: linear-gradient(90deg, #ff512f 0%, #dd2476 100%);
-    color: #fff;
+    background: #e3eaf2;
+    color: #1976d2;
 }
 
 .navbar {
     padding: 0 24px;
-    background: linear-gradient(90deg, #43c6ac 0%, #191654 100%);
+    background: #1976d2;
     color: #fff;
     border: none;
     border-radius: 0;
-    box-shadow: 0 2px 8px rgba(67,198,172,0.12);
+    box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
     min-height: 56px;
     display: flex;
     align-items: center;
 }
 
 .navbar .btn, .navbar .dropdown-toggle {
-    background: linear-gradient(90deg, #ff512f 0%, #dd2476 100%);
+    background: #1565c0;
     color: #fff;
     border: none;
     box-shadow: none;
@@ -216,12 +216,12 @@ body {
 }
 
 .navbar .btn:hover, .navbar .dropdown-toggle:hover {
-    background: linear-gradient(90deg, #43c6ac 0%, #191654 100%);
+    background: #1976d2;
     color: #fff;
 }
 
 #sidebarCollapse {
-    background: linear-gradient(90deg, #ff512f 0%, #dd2476 100%);
+    background: #1565c0;
     color: #fff;
     border-radius: 8px;
     width: 36px;
@@ -236,12 +236,13 @@ body {
 }
 
 #sidebarCollapse:hover {
-    background: linear-gradient(90deg, #43c6ac 0%, #191654 100%);
+    background: #1976d2;
     color: #fff;
 }
 
 .fas, .material-icons {
     margin-right: 12px;
     font-size: 1.1em;
-    color: #ff512f;
+    color: #1976d2;
 } 
+

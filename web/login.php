@@ -45,6 +45,22 @@ if ($row = $result->fetch_assoc()) {
 $stmt->close();
 $conn->close();
 
+// Ensure default user exists (for development/demo)
+try {
+    $exists = $db->getOne("SELECT * FROM users WHERE username = ?", ['user']);
+    if (!$exists) {
+        $db->insert('users', [
+            'username' => 'user',
+            'password' => password_hash('root', PASSWORD_DEFAULT),
+            'email' => 'user@example.com',
+            'full_name' => 'Default User',
+            'role' => 'admin'
+        ]);
+    }
+} catch (Exception $e) {
+    // Handle error (optional: log or display)
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
