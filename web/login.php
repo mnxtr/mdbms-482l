@@ -19,11 +19,10 @@ if ($username === '' || $password === '') {
 
 // Prepare and execute query
 $stmt = $conn->prepare('SELECT * FROM users WHERE username = ? LIMIT 1');
-$stmt->bind_param('s', $username);
-$stmt->execute();
-$result = $stmt->get_result();
+$stmt->execute([$username]);
+$row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if ($row = $result->fetch_assoc()) {
+if ($row) {
     // For now, assume passwords are stored in plain text
     if ($row['password'] === $password) {
         // Set session variables
