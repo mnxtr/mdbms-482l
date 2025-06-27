@@ -1,0 +1,243 @@
+/* Minimalistic Light Theme Layout */
+body {
+    background: #f5f5f5;
+    color: #333333;
+    font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.wrapper {
+    display: flex;
+    width: 100%;
+    align-items: stretch;
+    min-height: 100vh;
+    background: #f5f5f5;
+}
+
+#sidebar {
+    min-width: 220px;
+    max-width: 220px;
+    min-height: 100vh;
+    background: #ffffff;
+    border-right: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    padding-top: 0;
+    transition: margin 0.3s cubic-bezier(.4,0,.2,1);
+}
+
+#sidebar.active {
+    margin-left: -220px;
+}
+
+#sidebar .sidebar-header {
+    padding: 24px 20px 12px 20px;
+    background: #ffffff;
+    color: #1976d2;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+    font-size: 1.2em;
+    font-weight: 600;
+}
+
+#sidebar ul.components {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+#sidebar ul li {
+    margin: 0;
+}
+
+#sidebar ul li a {
+    padding: 12px 20px;
+    font-size: 1em;
+    display: flex;
+    align-items: center;
+    color: #555555;
+    text-decoration: none;
+    border-radius: 0;
+    transition: background 0.2s, color 0.2s;
+    position: relative;
+    letter-spacing: 0.03em;
+}
+
+#sidebar ul li a:hover, #sidebar ul li.active > a {
+    background: #1976d2;
+    color: #fff;
+}
+
+#sidebar ul ul a {
+    font-size: 0.95em !important;
+    padding-left: 40px !important;
+    background: #f9f9f9;
+    color: #555555;
+    border-radius: 0;
+}
+
+#sidebar ul ul a:hover {
+    background: #1976d2;
+    color: #fff;
+}
+
+#content {
+    width: 100%;
+    min-height: 100vh;
+    background: #f5f5f5;
+    padding: 32px 40px;
+    transition: all 0.3s;
+}
+
+.card {
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(25, 118, 210, 0.1);
+    border: 1px solid #ddd;
+    background: #ffffff;
+    color: #333333;
+    margin-bottom: 24px;
+    padding: 24px;
+    transition: none;
+}
+
+.card:hover {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+.table {
+    margin-bottom: 0;
+    background: #ffffff;
+    color: #333333;
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+}
+
+.table thead th {
+    border-top: none;
+    background: #e3f2fd;
+    color: #1976d2;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+}
+
+.table td, .table th {
+    border-bottom: 1px solid #ddd;
+    padding: 12px 16px;
+}
+
+@media (max-width: 900px) {
+    #sidebar {
+        min-width: 0;
+        max-width: 0;
+        margin-left: -220px;
+    }
+    #sidebar.active {
+        min-width: 220px;
+        max-width: 220px;
+        margin-left: 0;
+    }
+    #content {
+        width: 100%;
+        padding: 16px 8px;
+    }
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #ddd;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #1976d2;
+    border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #1565c0;
+}
+
+.badge {
+    border-radius: 4px;
+    font-weight: 500;
+    padding: 4px 10px;
+    background: #0288d1;
+    color: #fff;
+    font-size: 0.95em;
+}
+
+.badge.bg-success { background: #388e3c !important; color: #fff !important; }
+.badge.bg-warning { background: #ffa000 !important; color: #fff !important; }
+.badge.bg-danger { background: #d32f2f !important; color: #fff !important; }
+.badge.bg-info { background: #0288d1 !important; color: #fff !important; }
+
+.dropdown-menu {
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(25, 118, 210, 0.1);
+    border: 1px solid #ddd;
+    background: #ffffff;
+    margin-top: 8px;
+    color: #333333;
+}
+
+.dropdown-item:hover {
+    background: #1976d2;
+    color: #fff;
+}
+
+.navbar {
+    padding: 0 24px;
+    background: #ffffff;
+    color: #333333;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+}
+
+.navbar .btn, .navbar .dropdown-toggle {
+    background: #1976d2;
+    color: #fff;
+    border: none;
+    box-shadow: none;
+    font-weight: 500;
+    transition: background 0.2s, color 0.2s;
+}
+
+.navbar .btn:hover, .navbar .dropdown-toggle:hover {
+    background: #1565c0;
+    color: #fff;
+}
+
+#sidebarCollapse {
+    background: #1976d2;
+    color: #fff;
+    border-radius: 4px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: none;
+    border: none;
+    margin-right: 12px;
+    transition: background 0.2s, color 0.2s;
+}
+
+#sidebarCollapse:hover {
+    background: #1565c0;
+    color: #fff;
+}
+
+.fas, .material-icons {
+    margin-right: 12px;
+    font-size: 1.1em;
+    color: #9c27b0;
+}
