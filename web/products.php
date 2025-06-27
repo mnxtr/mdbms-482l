@@ -1,4 +1,9 @@
-<?php // products.php - converted from products.html ?>
+<?php
+require_once 'config/config.php';
+
+// Fetch all products
+$products = $db->getAll('SELECT * FROM products');
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,7 +46,7 @@
                 <button type="button" id="sidebarCollapse" class="btn">
                     <i class="fas fa-bars"></i>
                 </button>
-                <a href="index.php" class="btn ms-3" style="background:#1976d2;color:#fff;border-radius:0;border:none;font-weight:500;">← Dashboard</a>
+                <a href="index.php" class="btn ms-3" style="background:linear-gradient(90deg, #43c6ac 0%, #191654 100%);color:#fff;border-radius:8px;border:none;font-weight:500;">← Dashboard</a>
                 <div class="ms-auto">
                     <div class="dropdown">
                         <button class="btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown">
@@ -59,7 +64,7 @@
             <div class="container-fluid mt-4">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h2>Products</h2>
-                    <button class="btn btn-primary" disabled><i class="fas fa-plus"></i> Add Product</button>
+                    <button class="btn btn-primary" onclick="window.location.href='add-product.php'"><i class="fas fa-plus"></i> Add Product</button>
                 </div>
                 <div class="card">
                     <div class="card-body">
@@ -77,42 +82,24 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                <?php if ($products): ?>
+                                    <?php foreach ($products as $product): ?>
                                     <tr>
-                                        <td>P-1001</td>
-                                        <td>Widget A</td>
-                                        <td>Gadgets</td>
-                                        <td>$10.00</td>
-                                        <td>250</td>
-                                        <td>50</td>
+                                        <td><?= htmlspecialchars($product['product_code']) ?></td>
+                                        <td><?= htmlspecialchars($product['name']) ?></td>
+                                        <td><?= htmlspecialchars($product['category']) ?></td>
+                                        <td>$<?= number_format($product['unit_price'], 2) ?></td>
+                                        <td><?= (int)$product['current_stock'] ?></td>
+                                        <td><?= (int)$product['min_stock_level'] ?></td>
                                         <td>
-                                            <button class="btn btn-sm btn-info" disabled><i class="fas fa-edit"></i></button>
-                                            <button class="btn btn-sm btn-danger" disabled><i class="fas fa-trash"></i></button>
+                                            <a href="edit-product.php?id=<?= $product['product_id'] ?>" class="btn btn-sm btn-info"><i class="fas fa-edit"></i></a>
+                                            <a href="delete-product.php?id=<?= $product['product_id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this product?');"><i class="fas fa-trash"></i></a>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td>P-1002</td>
-                                        <td>Gadget B</td>
-                                        <td>Gadgets</td>
-                                        <td>$15.00</td>
-                                        <td>120</td>
-                                        <td>30</td>
-                                        <td>
-                                            <button class="btn btn-sm btn-info" disabled><i class="fas fa-edit"></i></button>
-                                            <button class="btn btn-sm btn-danger" disabled><i class="fas fa-trash"></i></button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>P-1003</td>
-                                        <td>Component C</td>
-                                        <td>Components</td>
-                                        <td>$7.50</td>
-                                        <td>400</td>
-                                        <td>80</td>
-                                        <td>
-                                            <button class="btn btn-sm btn-info" disabled><i class="fas fa-edit"></i></button>
-                                            <button class="btn btn-sm btn-danger" disabled><i class="fas fa-trash"></i></button>
-                                        </td>
-                                    </tr>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <tr><td colspan="7" class="text-center">No products found.</td></tr>
+                                <?php endif; ?>
                                 </tbody>
                             </table>
                         </div>

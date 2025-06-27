@@ -66,59 +66,68 @@ $conn->close();
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #181a1b;
+            background: linear-gradient(135deg, #f8ffae 0%, #43c6ac 100%);
         }
         .login-container {
             width: 100%;
-            max-width: 400px;
+            max-width: 420px;
             margin: 0 auto;
         }
         .login-card {
-            background: #23272a;
-            padding: 32px 28px;
-            border-radius: 0;
-            border: 1px solid #313338;
-            color: #e0e0e0;
-            box-shadow: none;
+            background: linear-gradient(135deg, #f8ffae 0%, #43c6ac 100%);
+            padding: 36px 32px;
+            border-radius: 16px;
+            color: #222;
+            box-shadow: 0 4px 24px rgba(67,198,172,0.12);
+            border: none;
         }
         .login-header {
             text-align: center;
             margin-bottom: 24px;
         }
         .login-header h1 {
-            color: #e0e0e0;
-            font-size: 24px;
+            color: #ff512f;
+            font-size: 26px;
             margin-bottom: 8px;
+            font-weight: 700;
+        }
+        .login-form .form-label {
+            color: #ff512f;
             font-weight: 600;
         }
         .login-form .form-control {
-            background: #181a1b;
-            color: #e0e0e0;
-            border: 1px solid #313338;
-            border-radius: 0;
+            background: #fffbe7;
+            color: #222;
+            border: 2px solid #43c6ac;
+            border-radius: 8px;
             margin-bottom: 18px;
         }
         .login-form .form-control:focus {
-            background: #23272a;
-            color: #fff;
-            border-color: #1976d2;
-            box-shadow: none;
+            background: #f8ffae;
+            color: #191654;
+            border-color: #ff512f;
+            box-shadow: 0 0 0 2px #43c6ac;
         }
         .login-form .btn {
-            background: #1976d2;
+            background: linear-gradient(90deg, #ff512f 0%, #dd2476 100%);
             color: #fff;
-            border-radius: 0;
+            border-radius: 8px;
             border: none;
             font-size: 16px;
-            font-weight: 500;
+            font-weight: 600;
             transition: background 0.2s;
         }
         .login-form .btn:hover, .login-form .btn:focus {
-            background: #1565c0;
+            background: linear-gradient(90deg, #43c6ac 0%, #191654 100%);
             color: #fff;
         }
         .text-muted {
-            color: #b0b3b8 !important;
+            color: #1976d2 !important;
+        }
+        #msg {
+            margin-top: 16px;
+            text-align: center;
+            font-weight: 600;
         }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

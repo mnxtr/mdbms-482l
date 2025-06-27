@@ -58,7 +58,7 @@
             <div class="container-fluid mt-4">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h2>Suppliers</h2>
-                    <button class="btn btn-primary" disabled><i class="fas fa-plus"></i> Add Supplier</button>
+                    <button class="btn btn-primary" onclick="window.location.href='add-supplier.php'"><i class="fas fa-plus"></i> Add Supplier</button>
                 </div>
                 <div class="card">
                     <div class="card-body">

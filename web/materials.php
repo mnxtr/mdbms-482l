@@ -58,7 +58,7 @@
             <div class="container-fluid mt-4">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h2>Raw Materials</h2>
-                    <button class="btn btn-primary" disabled><i class="fas fa-plus"></i> Add Material</button>
+                    <button class="btn btn-primary" onclick="window.location.href='add-material.php'"><i class="fas fa-plus"></i> Add Material</button>
                 </div>
                 <div class="card">
                     <div class="card-body">
