@@ -1,7 +1,7 @@
-/* Minimalistic Light Theme Layout */
+/* Vibrant Modern Theme Layout */
 body {
-    background: #f5f5f5;
-    color: #333333;
+    background: linear-gradient(135deg, #f8ffae 0%, #43c6ac 100%);
+    color: #222;
     font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
     margin: 0;
     padding: 0;
@@ -12,15 +12,16 @@ body {
     width: 100%;
     align-items: stretch;
     min-height: 100vh;
-    background: #f5f5f5;
+    background: none;
 }
 
 #sidebar {
     min-width: 220px;
     max-width: 220px;
     min-height: 100vh;
-    background: #ffffff;
-    border-right: 1px solid #ddd;
+    background: linear-gradient(135deg, #43c6ac 0%, #191654 100%);
+    border-right: none;
+    box-shadow: 2px 0 12px rgba(67,198,172,0.12);
     display: flex;
     flex-direction: column;
     padding-top: 0;
@@ -33,9 +34,9 @@ body {
 
 #sidebar .sidebar-header {
     padding: 24px 20px 12px 20px;
-    background: #ffffff;
-    color: #1976d2;
-    border-bottom: 1px solid #ddd;
+    background: transparent;
+    color: #fff;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
     text-align: left;
     font-size: 1.2em;
     font-weight: 600;
@@ -56,75 +57,77 @@ body {
     font-size: 1em;
     display: flex;
     align-items: center;
-    color: #555555;
+    color: #e0e0e0;
     text-decoration: none;
-    border-radius: 0;
+    border-radius: 8px;
     transition: background 0.2s, color 0.2s;
     position: relative;
     letter-spacing: 0.03em;
 }
 
 #sidebar ul li a:hover, #sidebar ul li.active > a {
-    background: #1976d2;
+    background: linear-gradient(90deg, #ff512f 0%, #dd2476 100%);
     color: #fff;
 }
 
 #sidebar ul ul a {
     font-size: 0.95em !important;
     padding-left: 40px !important;
-    background: #f9f9f9;
-    color: #555555;
-    border-radius: 0;
+    background: rgba(255,255,255,0.08);
+    color: #e0e0e0;
+    border-radius: 8px;
 }
 
 #sidebar ul ul a:hover {
-    background: #1976d2;
+    background: linear-gradient(90deg, #ff512f 0%, #dd2476 100%);
     color: #fff;
 }
 
 #content {
     width: 100%;
     min-height: 100vh;
-    background: #f5f5f5;
+    background: none;
     padding: 32px 40px;
     transition: all 0.3s;
 }
 
 .card {
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(25, 118, 210, 0.1);
-    border: 1px solid #ddd;
-    background: #ffffff;
-    color: #333333;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(67,198,172,0.12);
+    border: none;
+    background: linear-gradient(135deg, #f8ffae 0%, #43c6ac 100%);
+    color: #222;
     margin-bottom: 24px;
     padding: 24px;
     transition: none;
 }
 
 .card:hover {
-    background: #e3f2fd;
-    color: #1976d2;
+    background: linear-gradient(135deg, #43c6ac 0%, #f8ffae 100%);
+    color: #191654;
 }
 
 .table {
     margin-bottom: 0;
-    background: #ffffff;
-    color: #333333;
+    background: rgba(255,255,255,0.85);
+    color: #222;
     border-collapse: separate;
     border-spacing: 0;
     width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
 }
 
 .table thead th {
     border-top: none;
-    background: #e3f2fd;
-    color: #1976d2;
-    font-weight: 500;
+    background: linear-gradient(90deg, #ff512f 0%, #dd2476 100%);
+    color: #fff;
+    font-weight: 600;
     letter-spacing: 0.04em;
 }
 
 .table td, .table th {
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #e0e0e0;
     padding: 12px 16px;
 }
 
@@ -154,72 +157,73 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #1976d2;
-    border-radius: 0;
+    background: linear-gradient(135deg, #43c6ac 0%, #191654 100%);
+    border-radius: 8px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #1565c0;
+    background: linear-gradient(135deg, #ff512f 0%, #dd2476 100%);
 }
 
 .badge {
-    border-radius: 4px;
-    font-weight: 500;
-    padding: 4px 10px;
-    background: #0288d1;
+    border-radius: 8px;
+    font-weight: 600;
+    padding: 6px 14px;
+    background: linear-gradient(90deg, #ff512f 0%, #dd2476 100%);
     color: #fff;
-    font-size: 0.95em;
+    font-size: 1em;
 }
 
-.badge.bg-success { background: #388e3c !important; color: #fff !important; }
-.badge.bg-warning { background: #ffa000 !important; color: #fff !important; }
-.badge.bg-danger { background: #d32f2f !important; color: #fff !important; }
-.badge.bg-info { background: #0288d1 !important; color: #fff !important; }
+.badge.bg-success { background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%) !important; color: #fff !important; }
+.badge.bg-warning { background: linear-gradient(90deg, #f7971e 0%, #ffd200 100%) !important; color: #fff !important; }
+.badge.bg-danger { background: linear-gradient(90deg, #f953c6 0%, #b91d73 100%) !important; color: #fff !important; }
+.badge.bg-info { background: linear-gradient(90deg, #43c6ac 0%, #191654 100%) !important; color: #fff !important; }
 
 .dropdown-menu {
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(25, 118, 210, 0.1);
-    border: 1px solid #ddd;
-    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(67,198,172,0.12);
+    border: none;
+    background: #fff;
     margin-top: 8px;
-    color: #333333;
+    color: #222;
 }
 
 .dropdown-item:hover {
-    background: #1976d2;
+    background: linear-gradient(90deg, #ff512f 0%, #dd2476 100%);
     color: #fff;
 }
 
 .navbar {
     padding: 0 24px;
-    background: #ffffff;
-    color: #333333;
+    background: linear-gradient(90deg, #43c6ac 0%, #191654 100%);
+    color: #fff;
     border: none;
     border-radius: 0;
-    box-shadow: none;
+    box-shadow: 0 2px 8px rgba(67,198,172,0.12);
     min-height: 56px;
     display: flex;
     align-items: center;
 }
 
 .navbar .btn, .navbar .dropdown-toggle {
-    background: #1976d2;
+    background: linear-gradient(90deg, #ff512f 0%, #dd2476 100%);
     color: #fff;
     border: none;
     box-shadow: none;
-    font-weight: 500;
+    font-weight: 600;
+    border-radius: 8px;
     transition: background 0.2s, color 0.2s;
 }
 
 .navbar .btn:hover, .navbar .dropdown-toggle:hover {
-    background: #1565c0;
+    background: linear-gradient(90deg, #43c6ac 0%, #191654 100%);
     color: #fff;
 }
 
 #sidebarCollapse {
-    background: #1976d2;
+    background: linear-gradient(90deg, #ff512f 0%, #dd2476 100%);
     color: #fff;
-    border-radius: 4px;
+    border-radius: 8px;
     width: 36px;
     height: 36px;
     display: flex;
@@ -232,12 +236,12 @@ body {
 }
 
 #sidebarCollapse:hover {
-    background: #1565c0;
+    background: linear-gradient(90deg, #43c6ac 0%, #191654 100%);
     color: #fff;
 }
 
 .fas, .material-icons {
     margin-right: 12px;
     font-size: 1.1em;
-    color: #9c27b0;
+    color: #ff512f;
 }

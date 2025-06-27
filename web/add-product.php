@@ -43,31 +43,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="css/style.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        .form-label { color: #1976d2; font-weight: 500; }
+        .form-label { color: #ff512f; font-weight: 600; }
         .form-control, .form-select {
-            background: #23272a;
-            color: #e0e0e0;
-            border: 1px solid #1976d2;
-            border-radius: 4px;
+            background: #fffbe7;
+            color: #222;
+            border: 2px solid #43c6ac;
+            border-radius: 8px;
         }
         .form-control:focus, .form-select:focus {
-            background: #1e1e1e;
-            color: #fff;
-            border-color: #9c27b0;
-            box-shadow: 0 0 0 2px #1976d2;
+            background: #f8ffae;
+            color: #191654;
+            border-color: #ff512f;
+            box-shadow: 0 0 0 2px #43c6ac;
         }
         .btn-primary {
-            background: #1976d2;
+            background: linear-gradient(90deg, #ff512f 0%, #dd2476 100%);
             border: none;
-            border-radius: 4px;
-            font-weight: 500;
+            border-radius: 8px;
+            font-weight: 600;
         }
         .btn-primary:hover, .btn-primary:focus {
-            background: #1565c0;
+            background: linear-gradient(90deg, #43c6ac 0%, #191654 100%);
         }
         .card {
             max-width: 600px;
             margin: 40px auto;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #f8ffae 0%, #43c6ac 100%);
+            box-shadow: 0 4px 24px rgba(67,198,172,0.12);
+        }
+        .card-header {
+            background: linear-gradient(90deg, #ff512f 0%, #dd2476 100%);
+            color: #fff;
+            font-weight: 700;
+            border-radius: 16px 16px 0 0;
         }
     </style>
 </head>
