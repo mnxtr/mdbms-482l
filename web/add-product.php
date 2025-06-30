@@ -27,15 +27,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'description' => $description
         ];
         // Insert product into database
-        $result = $db->insert('products', $data);
-        if ($result) {
-            // Set success flash message and redirect
-            set_flash_message('success', 'Product added successfully!');
-            header('Location: products.php');
-            exit;
-        } else {
-            // Set error flash message and redirect
-            set_flash_message('danger', 'Failed to add product. Please try again.');
+        try {
+            // Debug: Check if products table exists
+            $tableExists = $db->getOne("SHOW TABLES LIKE 'products'");
+            if (!$tableExists) {
+                set_flash_message('danger', 'Products table does not exist. Please import the database schema.');
+                header('Location: products.php');
+                exit;
+            }
+            
+            // Debug: Log the data being inserted
+            error_log('Attempting to insert product data: ' . json_encode($data));
+            
+            $result = $db->insert('products', $data);
+            if ($result) {
+                // Set success flash message and redirect
+                set_flash_message('success', 'Product added successfully!');
+                header('Location: products.php');
+                exit;
+            } else {
+                // Set error flash message and redirect
+                set_flash_message('danger', 'Failed to add product. Database insertion failed.');
+                header('Location: products.php');
+                exit;
+            }
+        } catch (Exception $e) {
+            // Log the error for debugging
+            error_log('Product insertion error: ' . $e->getMessage());
+            set_flash_message('danger', 'Database error: ' . $e->getMessage());
             header('Location: products.php');
             exit;
         }

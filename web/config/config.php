@@ -12,7 +12,7 @@ session_start();
 // Application settings
 define('APP_NAME', 'Manufacturing Database System');
 define('APP_VERSION', '1.0.0');
-define('BASE_URL', 'http://localhost/manufacturing_db/');
+define('BASE_URL', 'http://localhost/web/');
 define('UPLOAD_PATH', 'uploads/');
 
 // Security settings

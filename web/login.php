@@ -5,44 +5,39 @@ require_once 'config/database.php';
 header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    echo json_encode(['success' => false, 'message' => 'Invalid request.']);
+    echo json_encode(['success' => false, 'message' => 'Invalid request method.']);
     exit;
 }
 
-$username = isset($_POST['username']) ? trim($_POST['username']) : '';
-$password = isset($_POST['password']) ? trim($_POST['password']) : '';
+$username = trim($_POST['username'] ?? '');
+$password = trim($_POST['password'] ?? '');
 
-if ($username === '' || $password === '') {
-    echo json_encode(['success' => false, 'message' => 'Both fields are required.']);
+if (empty($username) || empty($password)) {
+    echo json_encode(['success' => false, 'message' => 'Both username and password are required.']);
     exit;
 }
 
-// Prepare and execute query
-$stmt = $conn->prepare('SELECT * FROM users WHERE username = ? LIMIT 1');
-$stmt->execute([$username]);
-$row = $stmt->fetch(PDO::FETCH_ASSOC);
+try {
+    $stmt = $conn->prepare('SELECT user_id, username, password, role FROM users WHERE username = ? LIMIT 1');
+    $stmt->execute([$username]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if ($row) {
-    // For now, assume passwords are stored in plain text
-    if ($row['password'] === $password) {
-        // Set session variables
-        $_SESSION['user_id'] = $row['id'];
-        $_SESSION['username'] = $row['username'];
-        // Optionally, add role or other info: $_SESSION['role'] = $row['role'];
+    if ($user && password_verify($password, $user['password'])) {
+        session_regenerate_id(true);
+        $_SESSION['user_id'] = $user['user_id'];
+        $_SESSION['username'] = $user['username'];
+        $_SESSION['role'] = $user['role'];
         echo json_encode(['success' => true]);
         exit;
     } else {
         echo json_encode(['success' => false, 'message' => 'Invalid username or password.']);
         exit;
     }
-} else {
-    echo json_encode(['success' => false, 'message' => 'Invalid username or password.']);
+} catch (PDOException $e) {
+    error_log('Login Database Error: ' . $e->getMessage());
+    echo json_encode(['success' => false, 'message' => 'A server error occurred. Please try again later.']);
     exit;
 }
-
-// Close connection
-$stmt->close();
-$conn->close();
 
 // Ensure default user exists (for development/demo)
 try {
