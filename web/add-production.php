@@ -17,7 +17,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $expected_completion = sanitize_input($_POST['expected_completion'] ?? '');
     $status = sanitize_input($_POST['status'] ?? 'pending');
     $priority = sanitize_input($_POST['priority'] ?? 'normal');
-    $assigned_to = sanitize_input($_POST['assigned_to'] ?? '');
     $machine_id = sanitize_input($_POST['machine_id'] ?? '');
     $notes = sanitize_input($_POST['notes'] ?? '');
 
@@ -48,7 +47,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'expected_completion' => $expected_completion,
             'status' => $status,
             'priority' => $priority,
-            'assigned_to' => $assigned_to ?: null,
             'machine_id' => $machine_id ?: null,
             'notes' => $notes,
             'created_at' => date('Y-m-d H:i:s'),
@@ -70,9 +68,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Get data for dropdowns
-$products = $db->getAll("SELECT product_id, product_name FROM products ORDER BY product_name");
+$products = $db->getAll("SELECT product_id, name FROM products ORDER BY name");
 $employees = $db->getAll("SELECT user_id, full_name FROM users WHERE role IN ('operator', 'supervisor', 'manager') ORDER BY full_name");
-$machines = $db->getAll("SELECT machine_id, machine_name FROM machines WHERE status = 'active' ORDER BY machine_name");
+$machines = $db->getAll("SELECT machine_id, name FROM machines WHERE status = 'operational' ORDER BY name");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -178,7 +176,7 @@ $machines = $db->getAll("SELECT machine_id, machine_name FROM machines WHERE sta
                                                     <option value="">Select Product</option>
                                                     <?php foreach ($products as $product): ?>
                                                         <option value="<?= $product['product_id'] ?>" <?= ($_POST['product_id'] ?? '') == $product['product_id'] ? 'selected' : '' ?>>
-                                                            <?= htmlspecialchars($product['product_name']) ?>
+                                                            <?= htmlspecialchars($product['name']) ?>
                                                         </option>
                                                     <?php endforeach; ?>
                                                 </select>
@@ -236,25 +234,12 @@ $machines = $db->getAll("SELECT machine_id, machine_name FROM machines WHERE sta
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="mb-3">
-                                                <label for="assigned_to" class="form-label">Assigned To</label>
-                                                <select class="form-select" id="assigned_to" name="assigned_to">
-                                                    <option value="">Select Employee</option>
-                                                    <?php foreach ($employees as $employee): ?>
-                                                        <option value="<?= $employee['user_id'] ?>" <?= ($_POST['assigned_to'] ?? '') == $employee['user_id'] ? 'selected' : '' ?>>
-                                                            <?= htmlspecialchars($employee['full_name']) ?>
-                                                        </option>
-                                                    <?php endforeach; ?>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="mb-3">
                                                 <label for="machine_id" class="form-label">Machine</label>
                                                 <select class="form-select" id="machine_id" name="machine_id">
                                                     <option value="">Select Machine</option>
                                                     <?php foreach ($machines as $machine): ?>
                                                         <option value="<?= $machine['machine_id'] ?>" <?= ($_POST['machine_id'] ?? '') == $machine['machine_id'] ? 'selected' : '' ?>>
-                                                            <?= htmlspecialchars($machine['machine_name']) ?>
+                                                            <?= htmlspecialchars($machine['name']) ?>
                                                         </option>
                                                     <?php endforeach; ?>
                                                 </select>
