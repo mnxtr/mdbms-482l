@@ -4,22 +4,43 @@ require_once 'config/config.php';
 // Fetch report data
 try {
     // Production statistics
-    $totalOrders = $db->getOne('SELECT COUNT(*) FROM production_orders');
-    $completedOrders = $db->getOne('SELECT COUNT(*) FROM production_orders WHERE status = "Completed"');
-    $pendingOrders = $db->getOne('SELECT COUNT(*) FROM production_orders WHERE status = "Pending"');
-    $inProgressOrders = $db->getOne('SELECT COUNT(*) FROM production_orders WHERE status = "In Progress"');
+    $totalOrdersRow = $db->getOne('SELECT COUNT(*) as count FROM production_orders');
+    $totalOrders = $totalOrdersRow ? $totalOrdersRow['count'] : 0;
+
+    $completedOrdersRow = $db->getOne('SELECT COUNT(*) as count FROM production_orders WHERE status = "Completed"');
+    $completedOrders = $completedOrdersRow ? $completedOrdersRow['count'] : 0;
+
+    $pendingOrdersRow = $db->getOne('SELECT COUNT(*) as count FROM production_orders WHERE status = "Pending"');
+    $pendingOrders = $pendingOrdersRow ? $pendingOrdersRow['count'] : 0;
+
+    $inProgressOrdersRow = $db->getOne('SELECT COUNT(*) as count FROM production_orders WHERE status = "In Progress"');
+    $inProgressOrders = $inProgressOrdersRow ? $inProgressOrdersRow['count'] : 0;
     
     // Inventory statistics
-    $totalProducts = $db->getOne('SELECT COUNT(*) FROM products');
-    $lowStockProducts = $db->getOne('SELECT COUNT(*) FROM products WHERE current_stock <= min_stock_level');
-    $totalMaterials = $db->getOne('SELECT COUNT(*) FROM materials');
-    $lowStockMaterials = $db->getOne('SELECT COUNT(*) FROM materials WHERE current_stock <= min_stock_level');
+    $totalProductsRow = $db->getOne('SELECT COUNT(*) as count FROM products');
+    $totalProducts = $totalProductsRow ? $totalProductsRow['count'] : 0;
+
+    $lowStockProductsRow = $db->getOne('SELECT COUNT(*) as count FROM products WHERE current_stock <= min_stock_level');
+    $lowStockProducts = $lowStockProductsRow ? $lowStockProductsRow['count'] : 0;
+
+    $totalMaterialsRow = $db->getOne('SELECT COUNT(*) as count FROM materials');
+    $totalMaterials = $totalMaterialsRow ? $totalMaterialsRow['count'] : 0;
+
+    $lowStockMaterialsRow = $db->getOne('SELECT COUNT(*) as count FROM materials WHERE current_stock <= min_stock_level');
+    $lowStockMaterials = $lowStockMaterialsRow ? $lowStockMaterialsRow['count'] : 0;
     
     // Quality statistics
-    $totalInspections = $db->getOne('SELECT COUNT(*) FROM quality_control');
-    $passedInspections = $db->getOne('SELECT COUNT(*) FROM quality_control WHERE result = "Pass"');
-    $failedInspections = $db->getOne('SELECT COUNT(*) FROM quality_control WHERE result = "Fail"');
-    $pendingInspections = $db->getOne('SELECT COUNT(*) FROM quality_control WHERE status = "Pending"');
+    $totalInspectionsRow = $db->getOne('SELECT COUNT(*) as count FROM quality_control');
+    $totalInspections = $totalInspectionsRow ? $totalInspectionsRow['count'] : 0;
+
+    $passedInspectionsRow = $db->getOne('SELECT COUNT(*) as count FROM quality_control WHERE result = "Pass"');
+    $passedInspections = $passedInspectionsRow ? $passedInspectionsRow['count'] : 0;
+
+    $failedInspectionsRow = $db->getOne('SELECT COUNT(*) as count FROM quality_control WHERE result = "Fail"');
+    $failedInspections = $failedInspectionsRow ? $failedInspectionsRow['count'] : 0;
+
+    $pendingInspectionsRow = $db->getOne('SELECT COUNT(*) as count FROM quality_control WHERE status = "Pending"');
+    $pendingInspections = $pendingInspectionsRow ? $pendingInspectionsRow['count'] : 0;
     
     // Monthly production data for chart
     $monthlyProduction = $db->getAll('

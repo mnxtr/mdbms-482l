@@ -3,10 +3,17 @@ require_once 'config/config.php';
 
 // Fetch production statistics
 try {
-    $totalOrders = $db->getOne('SELECT COUNT(*) FROM production_orders');
-    $activeOrders = $db->getOne('SELECT COUNT(*) FROM production_orders WHERE status IN ("In Progress", "Pending")');
-    $completedOrders = $db->getOne('SELECT COUNT(*) FROM production_orders WHERE status = "Completed"');
-    $totalProducts = $db->getOne('SELECT COUNT(*) FROM products');
+    $totalOrdersRow = $db->getOne('SELECT COUNT(*) as count FROM production_orders');
+    $totalOrders = $totalOrdersRow ? $totalOrdersRow['count'] : 0;
+
+    $activeOrdersRow = $db->getOne('SELECT COUNT(*) as count FROM production_orders WHERE status IN ("In Progress", "Pending")');
+    $activeOrders = $activeOrdersRow ? $activeOrdersRow['count'] : 0;
+
+    $completedOrdersRow = $db->getOne('SELECT COUNT(*) as count FROM production_orders WHERE status = "Completed"');
+    $completedOrders = $completedOrdersRow ? $completedOrdersRow['count'] : 0;
+
+    $totalProductsRow = $db->getOne('SELECT COUNT(*) as count FROM products');
+    $totalProducts = $totalProductsRow ? $totalProductsRow['count'] : 0;
     
     // Fetch recent production orders
     $recentOrders = $db->getAll('

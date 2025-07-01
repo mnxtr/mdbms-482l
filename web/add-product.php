@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($name && $category && $unit_price > 0 && $stock >= 0 && $min_stock >= 0) {
         // Prepare data for insertion
         $data = [
-            'product_code' => generate_random_string(8),
+            'product_code' => Security::generateRandomString(8),
             'name' => $name,
             'category' => $category,
             'unit_price' => $unit_price,

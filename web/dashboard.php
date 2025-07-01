@@ -10,16 +10,20 @@ if (!is_logged_in()) {
 // Fetch dashboard statistics
 try {
     // Total products
-    $totalProducts = $db->getOne('SELECT COUNT(*) FROM products');
+    $totalProductsRow = $db->getOne('SELECT COUNT(*) as count FROM products');
+    $totalProducts = $totalProductsRow ? $totalProductsRow['count'] : 0;
     
     // Active production orders
-    $activeOrders = $db->getOne('SELECT COUNT(*) FROM production_orders WHERE status IN ("In Progress", "Pending")');
+    $activeOrdersRow = $db->getOne('SELECT COUNT(*) as count FROM production_orders WHERE status IN ("In Progress", "Pending")');
+    $activeOrders = $activeOrdersRow ? $activeOrdersRow['count'] : 0;
     
     // Pending QC inspections
-    $pendingQC = $db->getOne('SELECT COUNT(*) FROM quality_control WHERE status = "Pending"');
+    $pendingQCRow = $db->getOne('SELECT COUNT(*) as count FROM quality_control WHERE status = "Pending"');
+    $pendingQC = $pendingQCRow ? $pendingQCRow['count'] : 0;
     
     // Low stock items (products below minimum stock level)
-    $lowStockItems = $db->getOne('SELECT COUNT(*) FROM products WHERE current_stock <= min_stock_level');
+    $lowStockItemsRow = $db->getOne('SELECT COUNT(*) as count FROM products WHERE current_stock <= min_stock_level');
+    $lowStockItems = $lowStockItemsRow ? $lowStockItemsRow['count'] : 0;
     
     // Recent activity (last 10 activities)
     $recentActivity = $db->getAll('

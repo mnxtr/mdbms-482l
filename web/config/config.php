@@ -210,6 +210,11 @@ function format_file_size($bytes) {
     return round($bytes, 2) . ' ' . $units[$pow];
 }
 
+// Global input sanitization helper
+function sanitize_input($data, $type = 'string') {
+    return InputValidator::getInstance()->sanitize($data, $type);
+}
+
 // Authentication functions
 function is_logged_in() {
     return Security::checkSessionTimeout() && isset($_SESSION['user_id']);
