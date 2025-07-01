@@ -2,41 +2,39 @@
 require_once 'config/config.php'; // This starts the session and loads settings
 require_once 'config/database.php';
 
-header('Content-Type: application/json');
+// Handle AJAX login requests
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajax_login'])) {
+    header('Content-Type: application/json');
+    
+    $username = trim($_POST['username'] ?? '');
+    $password = trim($_POST['password'] ?? '');
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    echo json_encode(['success' => false, 'message' => 'Invalid request method.']);
-    exit;
-}
-
-$username = trim($_POST['username'] ?? '');
-$password = trim($_POST['password'] ?? '');
-
-if (empty($username) || empty($password)) {
-    echo json_encode(['success' => false, 'message' => 'Both username and password are required.']);
-    exit;
-}
-
-try {
-    $stmt = $conn->prepare('SELECT user_id, username, password, role FROM users WHERE username = ? LIMIT 1');
-    $stmt->execute([$username]);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if ($user && password_verify($password, $user['password'])) {
-        session_regenerate_id(true);
-        $_SESSION['user_id'] = $user['user_id'];
-        $_SESSION['username'] = $user['username'];
-        $_SESSION['role'] = $user['role'];
-        echo json_encode(['success' => true]);
-        exit;
-    } else {
-        echo json_encode(['success' => false, 'message' => 'Invalid username or password.']);
+    if (empty($username) || empty($password)) {
+        echo json_encode(['success' => false, 'message' => 'Both username and password are required.']);
         exit;
     }
-} catch (PDOException $e) {
-    error_log('Login Database Error: ' . $e->getMessage());
-    echo json_encode(['success' => false, 'message' => 'A server error occurred. Please try again later.']);
-    exit;
+
+    try {
+        $stmt = $conn->prepare('SELECT user_id, username, password, role FROM users WHERE username = ? LIMIT 1');
+        $stmt->execute([$username]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($user && password_verify($password, $user['password'])) {
+            session_regenerate_id(true);
+            $_SESSION['user_id'] = $user['user_id'];
+            $_SESSION['username'] = $user['username'];
+            $_SESSION['role'] = $user['role'];
+            echo json_encode(['success' => true]);
+            exit;
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Invalid username or password.']);
+            exit;
+        }
+    } catch (PDOException $e) {
+        error_log('Login Database Error: ' . $e->getMessage());
+        echo json_encode(['success' => false, 'message' => 'A server error occurred. Please try again later.']);
+        exit;
+    }
 }
 
 // Ensure default user exists (for development/demo)
@@ -54,7 +52,6 @@ try {
 } catch (Exception $e) {
     // Handle error (optional: log or display)
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -152,6 +149,7 @@ try {
             <!-- Static error message example (remove or edit as needed) -->
             <!-- <div class="alert alert-danger" role="alert">Invalid username or password</div> -->
             <form class="login-form" id="loginForm" method="POST" action="#" onsubmit="return false;">
+                <input type="hidden" name="ajax_login" value="1">
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
                     <input type="text" class="form-control" id="username" name="username" required>
