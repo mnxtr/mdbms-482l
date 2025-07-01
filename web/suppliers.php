@@ -1,4 +1,12 @@
-<?php // suppliers.php - converted from suppliers.html ?>
+<?php
+require_once 'config/config.php';
+
+// Fetch all suppliers
+$suppliers = $db->getAll('SELECT * FROM suppliers ORDER BY name');
+
+// Get and display flash message if present
+$flash = get_flash_message();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,7 +27,7 @@
                 <p>Manufacturing Database System</p>
             </div>
             <ul class="components">
-                <li><a href="index.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
                 <li>
                     <a href="#inventorySubmenu" data-bs-toggle="collapse"><i class="fas fa-boxes"></i> Inventory</a>
                     <ul class="collapse list-unstyled" id="inventorySubmenu">
@@ -41,14 +49,15 @@
                 <button type="button" id="sidebarCollapse" class="btn">
                     <i class="fas fa-bars"></i>
                 </button>
+                <a href="dashboard.php" class="btn ms-3" style="background:linear-gradient(90deg, #43c6ac 0%, #191654 100%);color:#fff;border-radius:8px;border:none;font-weight:500;">← Dashboard</a>
                 <div class="ms-auto">
                     <div class="dropdown">
                         <button class="btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown">
                             <i class="fas fa-user"></i> Admin
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="#">Profile</a></li>
-                            <li><a class="dropdown-item" href="#">Settings</a></li>
+                            <li><a class="dropdown-item" href="profile.php">Profile</a></li>
+                            <li><a class="dropdown-item" href="settings.php">Settings</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="logout.php">Logout</a></li>
                         </ul>
@@ -56,6 +65,13 @@
                 </div>
             </nav>
             <div class="container-fluid mt-4">
+                <!-- Flash message display -->
+                <?php if ($flash): ?>
+                    <div class="alert alert-<?= htmlspecialchars($flash['type']) ?>" role="alert">
+                        <?= htmlspecialchars($flash['message']) ?>
+                    </div>
+                <?php endif; ?>
+                
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h2>Suppliers</h2>
                     <button class="btn btn-primary" onclick="window.location.href='add-supplier.php'"><i class="fas fa-plus"></i> Add Supplier</button>
@@ -70,44 +86,54 @@
                                         <th>Contact Person</th>
                                         <th>Email</th>
                                         <th>Phone</th>
-                                        <th>Address</th>
+                                        <th>Location</th>
+                                        <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                <?php if ($suppliers): ?>
+                                    <?php foreach ($suppliers as $supplier): ?>
                                     <tr>
-                                        <td>ABC Metals</td>
-                                        <td>Sarah Lee</td>
-                                        <td>sarah@abcmetals.com</td>
-                                        <td>+1 555-1234</td>
-                                        <td>123 Industrial Ave, City</td>
+                                        <td><?= htmlspecialchars($supplier['name']) ?></td>
+                                        <td><?= htmlspecialchars($supplier['contact_person']) ?></td>
+                                        <td><?= htmlspecialchars($supplier['email']) ?></td>
+                                        <td><?= htmlspecialchars($supplier['phone'] ?? 'N/A') ?></td>
                                         <td>
-                                            <button class="btn btn-sm btn-info" disabled><i class="fas fa-edit"></i></button>
-                                            <button class="btn btn-sm btn-danger" disabled><i class="fas fa-trash"></i></button>
+                                            <?php 
+                                            $location = [];
+                                            if (!empty($supplier['city'])) $location[] = $supplier['city'];
+                                            if (!empty($supplier['state'])) $location[] = $supplier['state'];
+                                            if (!empty($supplier['country'])) $location[] = $supplier['country'];
+                                            echo htmlspecialchars(implode(', ', $location) ?: 'N/A');
+                                            ?>
+                                        </td>
+                                        <td>
+                                            <?php
+                                            $statusClass = 'badge bg-secondary';
+                                            switch ($supplier['status']) {
+                                                case 'Active':
+                                                    $statusClass = 'badge bg-success';
+                                                    break;
+                                                case 'Inactive':
+                                                    $statusClass = 'badge bg-danger';
+                                                    break;
+                                                case 'Suspended':
+                                                    $statusClass = 'badge bg-warning';
+                                                    break;
+                                            }
+                                            ?>
+                                            <span class="<?= $statusClass ?>"><?= htmlspecialchars($supplier['status']) ?></span>
+                                        </td>
+                                        <td>
+                                            <a href="edit-supplier.php?id=<?= $supplier['supplier_id'] ?>" class="btn btn-sm btn-info"><i class="fas fa-edit"></i></a>
+                                            <a href="delete-supplier.php?id=<?= $supplier['supplier_id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this supplier?');"><i class="fas fa-trash"></i></a>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td>Global Plastics</td>
-                                        <td>Tom Brown</td>
-                                        <td>tom@globalplastics.com</td>
-                                        <td>+1 555-5678</td>
-                                        <td>456 Manufacturing Rd, City</td>
-                                        <td>
-                                            <button class="btn btn-sm btn-info" disabled><i class="fas fa-edit"></i></button>
-                                            <button class="btn btn-sm btn-danger" disabled><i class="fas fa-trash"></i></button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>WireWorks</td>
-                                        <td>Linda Green</td>
-                                        <td>linda@wireworks.com</td>
-                                        <td>+1 555-9012</td>
-                                        <td>789 Supplier St, City</td>
-                                        <td>
-                                            <button class="btn btn-sm btn-info" disabled><i class="fas fa-edit"></i></button>
-                                            <button class="btn btn-sm btn-danger" disabled><i class="fas fa-trash"></i></button>
-                                        </td>
-                                    </tr>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <tr><td colspan="7" class="text-center">No suppliers found.</td></tr>
+                                <?php endif; ?>
                                 </tbody>
                             </table>
                         </div>

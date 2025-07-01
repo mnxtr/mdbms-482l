@@ -1,4 +1,12 @@
-<?php // employees.php - converted from employees.html ?>
+<?php
+require_once 'config/config.php';
+
+// Fetch all employees (users)
+$employees = $db->getAll('SELECT * FROM users ORDER BY first_name, last_name');
+
+// Get and display flash message if present
+$flash = get_flash_message();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,7 +27,7 @@
                 <p>Manufacturing Database System</p>
             </div>
             <ul class="components">
-                <li><a href="index.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
                 <li>
                     <a href="#inventorySubmenu" data-bs-toggle="collapse"><i class="fas fa-boxes"></i> Inventory</a>
                     <ul class="collapse list-unstyled" id="inventorySubmenu">
@@ -41,14 +49,15 @@
                 <button type="button" id="sidebarCollapse" class="btn">
                     <i class="fas fa-bars"></i>
                 </button>
+                <a href="dashboard.php" class="btn ms-3" style="background:linear-gradient(90deg, #43c6ac 0%, #191654 100%);color:#fff;border-radius:8px;border:none;font-weight:500;">← Dashboard</a>
                 <div class="ms-auto">
                     <div class="dropdown">
                         <button class="btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown">
                             <i class="fas fa-user"></i> Admin
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="#">Profile</a></li>
-                            <li><a class="dropdown-item" href="#">Settings</a></li>
+                            <li><a class="dropdown-item" href="profile.php">Profile</a></li>
+                            <li><a class="dropdown-item" href="settings.php">Settings</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="logout.php">Logout</a></li>
                         </ul>
@@ -56,6 +65,13 @@
                 </div>
             </nav>
             <div class="container-fluid mt-4">
+                <!-- Flash message display -->
+                <?php if ($flash): ?>
+                    <div class="alert alert-<?= htmlspecialchars($flash['type']) ?>" role="alert">
+                        <?= htmlspecialchars($flash['message']) ?>
+                    </div>
+                <?php endif; ?>
+                
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h2>Employees</h2>
                     <button class="btn btn-primary" onclick="window.location.href='add-employee.php'"><i class="fas fa-plus"></i> Add Employee</button>
@@ -67,7 +83,9 @@
                                 <thead>
                                     <tr>
                                         <th>Name</th>
+                                        <th>Username</th>
                                         <th>Role</th>
+                                        <th>Department</th>
                                         <th>Email</th>
                                         <th>Phone</th>
                                         <th>Status</th>
@@ -75,39 +93,43 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                <?php if ($employees): ?>
+                                    <?php foreach ($employees as $employee): ?>
                                     <tr>
-                                        <td>John Doe</td>
-                                        <td>Manager</td>
-                                        <td>john.doe@example.com</td>
-                                        <td>+1 555-1111</td>
-                                        <td><span class="badge bg-success">Active</span></td>
+                                        <td><?= htmlspecialchars($employee['first_name'] . ' ' . $employee['last_name']) ?></td>
+                                        <td><?= htmlspecialchars($employee['username']) ?></td>
+                                        <td><?= htmlspecialchars($employee['role']) ?></td>
+                                        <td><?= htmlspecialchars($employee['department'] ?? 'N/A') ?></td>
+                                        <td><?= htmlspecialchars($employee['email']) ?></td>
+                                        <td><?= htmlspecialchars($employee['phone'] ?? 'N/A') ?></td>
                                         <td>
-                                            <button class="btn btn-sm btn-info" disabled><i class="fas fa-edit"></i></button>
-                                            <button class="btn btn-sm btn-danger" disabled><i class="fas fa-trash"></i></button>
+                                            <?php
+                                            $statusClass = 'badge bg-secondary';
+                                            switch ($employee['status']) {
+                                                case 'Active':
+                                                    $statusClass = 'badge bg-success';
+                                                    break;
+                                                case 'Inactive':
+                                                    $statusClass = 'badge bg-danger';
+                                                    break;
+                                                case 'On Leave':
+                                                    $statusClass = 'badge bg-warning';
+                                                    break;
+                                            }
+                                            ?>
+                                            <span class="<?= $statusClass ?>"><?= htmlspecialchars($employee['status']) ?></span>
+                                        </td>
+                                        <td>
+                                            <a href="edit-employee.php?id=<?= $employee['user_id'] ?>" class="btn btn-sm btn-info"><i class="fas fa-edit"></i></a>
+                                            <?php if ($employee['role'] !== 'Admin'): ?>
+                                                <a href="delete-employee.php?id=<?= $employee['user_id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this employee?');"><i class="fas fa-trash"></i></a>
+                                            <?php endif; ?>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td>Jane Smith</td>
-                                        <td>Supervisor</td>
-                                        <td>jane.smith@example.com</td>
-                                        <td>+1 555-2222</td>
-                                        <td><span class="badge bg-success">Active</span></td>
-                                        <td>
-                                            <button class="btn btn-sm btn-info" disabled><i class="fas fa-edit"></i></button>
-                                            <button class="btn btn-sm btn-danger" disabled><i class="fas fa-trash"></i></button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Mike Johnson</td>
-                                        <td>Operator</td>
-                                        <td>mike.johnson@example.com</td>
-                                        <td>+1 555-3333</td>
-                                        <td><span class="badge bg-warning">On Leave</span></td>
-                                        <td>
-                                            <button class="btn btn-sm btn-info" disabled><i class="fas fa-edit"></i></button>
-                                            <button class="btn btn-sm btn-danger" disabled><i class="fas fa-trash"></i></button>
-                                        </td>
-                                    </tr>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <tr><td colspan="8" class="text-center">No employees found.</td></tr>
+                                <?php endif; ?>
                                 </tbody>
                             </table>
                         </div>

@@ -127,6 +127,16 @@ try {
         .login-form .btn:hover, .login-form .btn:focus {
             background: linear-gradient(90deg, #43c6ac 0%, #191654 100%);
             color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(67,198,172,0.3);
+        }
+        .login-form .btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .login-form .btn:active {
+            transform: translateY(0);
         }
         .text-muted {
             color: #1976d2 !important;
@@ -159,7 +169,9 @@ try {
                     <input type="password" class="form-control" id="password" name="password" required>
                 </div>
                 <div class="d-grid">
-                    <button type="submit" class="btn">Login</button>
+                    <button type="submit" class="btn" id="loginBtn">
+                        <i class="fas fa-sign-in-alt me-2"></i>Login
+                    </button>
                 </div>
             </form>
         </div>

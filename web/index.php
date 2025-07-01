@@ -23,7 +23,7 @@
             </div>
             <ul class="components">
                 <li class="active">
-                    <a href="dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                    <a href="index.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
                 </li>
                 <li>
                     <a href="#inventorySubmenu" data-bs-toggle="collapse"><i class="fas fa-boxes"></i> Inventory</a>

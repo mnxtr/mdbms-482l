@@ -1,4 +1,35 @@
-<?php // production.php - converted from production.html ?>
+<?php
+require_once 'config/config.php';
+
+// Fetch production statistics
+try {
+    $totalOrders = $db->getOne('SELECT COUNT(*) FROM production_orders');
+    $activeOrders = $db->getOne('SELECT COUNT(*) FROM production_orders WHERE status IN ("In Progress", "Pending")');
+    $completedOrders = $db->getOne('SELECT COUNT(*) FROM production_orders WHERE status = "Completed"');
+    $totalProducts = $db->getOne('SELECT COUNT(*) FROM products');
+    
+    // Fetch recent production orders
+    $recentOrders = $db->getAll('
+        SELECT po.*, p.name as product_name, u.username as created_by_name
+        FROM production_orders po
+        LEFT JOIN products p ON po.product_id = p.product_id
+        LEFT JOIN users u ON po.created_by = u.user_id
+        ORDER BY po.created_at DESC
+        LIMIT 10
+    ');
+    
+} catch (Exception $e) {
+    error_log("Production page error: " . $e->getMessage());
+    $totalOrders = 0;
+    $activeOrders = 0;
+    $completedOrders = 0;
+    $totalProducts = 0;
+    $recentOrders = [];
+}
+
+// Get and display flash message if present
+$flash = get_flash_message();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,7 +50,7 @@
                 <p>Manufacturing Database System</p>
             </div>
             <ul class="components">
-                <li><a href="index.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
                 <li>
                     <a href="#inventorySubmenu" data-bs-toggle="collapse"><i class="fas fa-boxes"></i> Inventory</a>
                     <ul class="collapse list-unstyled" id="inventorySubmenu">
@@ -41,57 +72,151 @@
                 <button type="button" id="sidebarCollapse" class="btn">
                     <i class="fas fa-bars"></i>
                 </button>
+                <a href="dashboard.php" class="btn ms-3" style="background:linear-gradient(90deg, #43c6ac 0%, #191654 100%);color:#fff;border-radius:8px;border:none;font-weight:500;">← Dashboard</a>
                 <div class="ms-auto">
                     <div class="dropdown">
                         <button class="btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown">
                             <i class="fas fa-user"></i> Admin
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="#">Profile</a></li>
-                            <li><a class="dropdown-item" href="#">Settings</a></li>
+                            <li><a class="dropdown-item" href="profile.php">Profile</a></li>
+                            <li><a class="dropdown-item" href="settings.php">Settings</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="login.php">Back to Login</a></li>
+                            <li><a class="dropdown-item" href="logout.php">Logout</a></li>
                         </ul>
                     </div>
                 </div>
             </nav>
             <div class="container-fluid mt-4">
+                <!-- Flash message display -->
+                <?php if ($flash): ?>
+                    <div class="alert alert-<?= htmlspecialchars($flash['type']) ?>" role="alert">
+                        <?= htmlspecialchars($flash['message']) ?>
+                    </div>
+                <?php endif; ?>
+                
+                <!-- Production Statistics -->
                 <div class="row">
                     <div class="col-md-3 mb-4">
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title">Total Products</h5>
-                                <h2 class="card-text">1,234</h2>
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h5 class="card-title text-muted">Total Orders</h5>
+                                        <h2 class="card-text"><?= number_format($totalOrders) ?></h2>
+                                    </div>
+                                    <div class="align-self-center">
+                                        <i class="fas fa-clipboard-list fa-2x text-primary"></i>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <!-- More cards for metrics -->
-                </div>
-                <div class="card mt-4">
-                    <div class="card-header">Production Trends</div>
-                    <div class="card-body">
-                        <canvas id="productionChart"></canvas>
+                    <div class="col-md-3 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h5 class="card-title text-muted">Active Orders</h5>
+                                        <h2 class="card-text"><?= number_format($activeOrders) ?></h2>
+                                    </div>
+                                    <div class="align-self-center">
+                                        <i class="fas fa-industry fa-2x text-warning"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h5 class="card-title text-muted">Completed</h5>
+                                        <h2 class="card-text"><?= number_format($completedOrders) ?></h2>
+                                    </div>
+                                    <div class="align-self-center">
+                                        <i class="fas fa-check-circle fa-2x text-success"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h5 class="card-title text-muted">Total Products</h5>
+                                        <h2 class="card-text"><?= number_format($totalProducts) ?></h2>
+                                    </div>
+                                    <div class="align-self-center">
+                                        <i class="fas fa-boxes fa-2x text-info"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="container-fluid mt-4">
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <span>Products</span>
-                            <button onclick="window.location.href='add-product.php'" class="btn btn-primary">Add Product</button>
-                        </div>
-                        <div class="card-body">
-                            <table class="table">
+
+                <!-- Recent Production Orders -->
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">Recent Production Orders</h5>
+                        <button onclick="window.location.href='add-production.php'" class="btn btn-primary"><i class="fas fa-plus"></i> Create Order</button>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Thumbnail</th>
-                                        <th>Name</th>
-                                        <th>Category</th>
-                                        <th>Stock</th>
+                                        <th>Order ID</th>
+                                        <th>Product</th>
+                                        <th>Quantity</th>
+                                        <th>Status</th>
+                                        <th>Created By</th>
+                                        <th>Created Date</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- Product rows here -->
+                                <?php if ($recentOrders): ?>
+                                    <?php foreach ($recentOrders as $order): ?>
+                                    <tr>
+                                        <td>#<?= $order['order_id'] ?></td>
+                                        <td><?= htmlspecialchars($order['product_name'] ?? 'N/A') ?></td>
+                                        <td><?= number_format($order['quantity']) ?></td>
+                                        <td>
+                                            <?php
+                                            $statusClass = 'badge bg-secondary';
+                                            switch ($order['status']) {
+                                                case 'Completed':
+                                                    $statusClass = 'badge bg-success';
+                                                    break;
+                                                case 'In Progress':
+                                                    $statusClass = 'badge bg-warning';
+                                                    break;
+                                                case 'Pending':
+                                                    $statusClass = 'badge bg-info';
+                                                    break;
+                                                case 'Cancelled':
+                                                    $statusClass = 'badge bg-danger';
+                                                    break;
+                                            }
+                                            ?>
+                                            <span class="<?= $statusClass ?>"><?= htmlspecialchars($order['status']) ?></span>
+                                        </td>
+                                        <td><?= htmlspecialchars($order['created_by_name'] ?? 'System') ?></td>
+                                        <td><?= date('M j, Y', strtotime($order['created_at'])) ?></td>
+                                        <td>
+                                            <a href="edit-production.php?id=<?= $order['order_id'] ?>" class="btn btn-sm btn-info"><i class="fas fa-edit"></i></a>
+                                            <a href="delete-production.php?id=<?= $order['order_id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this order?');"><i class="fas fa-trash"></i></a>
+                                        </td>
+                                    </tr>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <tr><td colspan="7" class="text-center">No production orders found.</td></tr>
+                                <?php endif; ?>
                                 </tbody>
                             </table>
                         </div>

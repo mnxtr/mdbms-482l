@@ -247,7 +247,9 @@ $flash = get_flash_message();
                                     </div>
                                     
                                     <div id="formAlert"></div>
-                                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Update Profile</button>
+                                    <div class="d-grid">
+                                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Update Profile</button>
+                                    </div>
                                 </form>
                             </div>
                         </div>
