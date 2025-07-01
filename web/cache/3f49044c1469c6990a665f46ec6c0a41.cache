@@ -1,0 +1,1 @@
+a:9:{s:7:"user_id";i:1;s:8:"username";s:5:"admin";s:8:"password";s:60:"$2y$10$oYi4FgEk0/wNdNa9GpWJleQe3CXIxbJ9FqCYEJUwRlwph.oyoVEX6";s:5:"email";s:17:"admin@example.com";s:9:"full_name";s:20:"System Administrator";s:4:"role";s:5:"admin";s:6:"status";s:6:"active";s:10:"created_at";s:19:"2025-07-01 01:17:11";s:10:"updated_at";s:19:"2025-07-01 01:17:11";}

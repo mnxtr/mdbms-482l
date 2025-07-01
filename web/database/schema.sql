@@ -3,7 +3,7 @@ CREATE DATABASE IF NOT EXISTS manufacturing_db;
 USE manufacturing_db;
 
 -- Users table
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     user_id INT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(50) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
@@ -13,6 +13,15 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+
+-- Insert or update admin user
+INSERT INTO users (username, password, email, full_name, role) 
+VALUES ('admin', '$2y$12$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin@example.com', 'Administrator', 'admin')
+ON DUPLICATE KEY UPDATE 
+    password = '$2y$12$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
+    email = 'admin@example.com',
+    full_name = 'Administrator',
+    role = 'admin';
 
 -- Products table
 CREATE TABLE products (

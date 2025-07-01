@@ -233,7 +233,7 @@ function get_logged_in_user() {
 }
 
 function check_role($allowed_roles) {
-    $user = get_current_user();
+    $user = get_logged_in_user();
     return $user && in_array($user['role'], (array)$allowed_roles);
 }
 
@@ -265,6 +265,10 @@ class Logger {
         if (!IS_PRODUCTION) {
             self::log('DEBUG', $message, $context);
         }
+    }
+    
+    public static function warning($message, $context = []) {
+        self::log('WARNING', $message, $context);
     }
 }
 
